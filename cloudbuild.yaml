@@ -1,9 +1,22 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-image', '-f', 'Dockerfile', '.']
+    args: [
+      'build',
+      '-f', 'Dockerfile',
+      '-t', '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/segmentation-backend:${SHORT_SHA}',
+      '-t', '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/segmentation-backend:latest',
+      '.'
+    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      '--all-tags',
+      '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/segmentation-backend'
+    ]
 
-images:
-  - 'gcr.io/$PROJECT_ID/my-image'
+substitutions:
+  _LOCATION: 'us-central1'
+  _REPOSITORY: 'experiment'
 
 options:
   logging: CLOUD_LOGGING_ONLY
