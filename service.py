@@ -10,3 +10,8 @@ async def read_root():
 @astha.get("/status")
 async def get_status():
     return {"status": "running"}
+
+@astha.get("/health")
+async def get_health():
+    return {"status": "healthy"}
+
